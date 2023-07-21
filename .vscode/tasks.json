@@ -1,0 +1,74 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "Clear project",
+            "type": "shell",
+            "command": "rm -rf cmake-build-debug && rm -rf cmake-build-release",
+            "options": {
+                "cwd": "${workspaceFolder}"
+            },
+        },
+        {
+            "label": "Create build directory",
+            "type": "shell",
+            "command": "mkdir -p cmake-build-${input:buildType}",
+            "options": {
+                "cwd": "${workspaceFolder}"
+            },
+            "group": "build"
+        },
+        {
+            "label": "Install dependencies",
+            "type": "shell",
+            "command": "conan install ${workspaceFolder}/conan -of cmake-build-${input:buildType} --profile ${workspaceFolder}/conan/macos-m1-cmake-homebrew-gcc13-cpp20 --build=missing -s build_type=${input:buildType}",
+            "group": "build",
+            "dependsOn": [
+                "Create build directory"
+            ]
+        },
+        {
+            "label": "Configure project",
+            "type": "shell",
+            //"command": "cd cmake-build-${input:buildType} && source conanbuild.sh && cmake .. -B cmake-build-${input:buildType} -DCMAKE_BUILD_TYPE=${input:buildType} --preset conan-default",
+            "command": "source cmake-build-${input:buildType}/conanbuild.sh && cmake -S ${workspaceFolder} -B cmake-build-${input:buildType} -DCMAKE_BUILD_TYPE=${input:buildType} -G \"Unix Makefiles\" -DCMAKE_TOOLCHAIN_FILE=cmake-build-${input:buildType}/conan_toolchain.cmake",
+            "group": "build",
+            "dependsOn": [
+                "Install dependencies"
+            ]
+        },
+        {
+            "label": "Build project",
+            "type": "shell",
+            "command": "cmake --build cmake-build-${input:buildType}",
+            "group": "build",
+            "dependsOn": [
+                "Configure project"
+            ],
+            "problemMatcher": "$gcc",
+        },
+        {
+            "label": "Run program",
+            "type": "shell",
+            "command": "source ../conanrun.sh && ./chip8-emulator",
+            "group": "test",
+            "options": {
+                "cwd": "${workspaceFolder}/cmake-build-${input:buildType}/src"
+            },
+            "dependsOn": [
+                "Build project"
+            ]
+        }
+    ],
+    "inputs": [
+        {
+            "id": "buildType",
+            "type": "pickString",
+            "description": "Choose the build type",
+            "options": [
+                "Debug",
+                "Release"
+            ]
+        }
+    ]
+}

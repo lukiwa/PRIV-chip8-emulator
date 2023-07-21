@@ -1,0 +1,29 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Build and run program",
+            "type": "cppdbg",
+            "request": "launch",
+            "program": "${workspaceFolder}/cmake-build-${input:buildType}/src/chip8-emulator",
+            "args": [],
+            "stopAtEntry": true,
+            "cwd": "${workspaceFolder}/cmake-build-${input:buildType}/src",
+            "environment": [],
+            "externalConsole": false,
+            "MIMode": "lldb",
+            "preLaunchTask": "Build project"
+        }
+    ],
+    "inputs": [
+        {
+            "id": "buildType",
+            "type": "pickString",
+            "description": "Choose the build type",
+            "options": [
+                "Debug",
+                "Release"
+            ]
+        }
+    ]
+}
