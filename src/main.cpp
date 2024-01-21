@@ -14,7 +14,7 @@ int main(int argc, char** argv)
 
     // window
     ALLOW_DISPLAY;
-    GLFW::Window window(128, 128, "Chip8");
+    GLFW::Window window(512, 512, "Chip8");
 
     // Glew
     if (glewInit() != GLEW_OK) {
@@ -34,7 +34,7 @@ int main(int argc, char** argv)
     renderer->SetPixelMap(pixelMap.get());
 
     Emulation e({0xe0, 0x00});
-    e.ReadInstruction();
+    e.FetchAndDecode();
 
     while (!window.ShouldClose()) {
         window.ProcessInput();
