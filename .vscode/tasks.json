@@ -21,7 +21,7 @@
         {
             "label": "Install dependencies",
             "type": "shell",
-            "command": "conan install ${workspaceFolder}/conan -of cmake-build-${input:buildType} --profile ${workspaceFolder}/conan/macos-m1-cmake-homebrew-gcc13-cpp20 --build=missing -s build_type=${input:buildType}",
+            "command": "conan install ${workspaceFolder}/conan -of cmake-build-${input:buildType} --profile ${workspaceFolder}/conan/macos-m1-cmake-clang15-cpp20 --build=missing -s build_type=${input:buildType}",
             "group": "build",
             "dependsOn": [
                 "Create build directory"
@@ -30,8 +30,7 @@
         {
             "label": "Configure project",
             "type": "shell",
-            //"command": "cd cmake-build-${input:buildType} && source conanbuild.sh && cmake .. -B cmake-build-${input:buildType} -DCMAKE_BUILD_TYPE=${input:buildType} --preset conan-default",
-            "command": "source cmake-build-${input:buildType}/conanbuild.sh && cmake -S ${workspaceFolder} -B cmake-build-${input:buildType} -DCMAKE_BUILD_TYPE=${input:buildType} -G \"Unix Makefiles\" -DCMAKE_TOOLCHAIN_FILE=cmake-build-${input:buildType}/conan_toolchain.cmake",
+            "command": "source cmake-build-${input:buildType}/conanbuild.sh && cmake -S ${workspaceFolder} -B cmake-build-${input:buildType} -DCMAKE_BUILD_TYPE=${input:buildType} -G \"Unix Makefiles\" -DCMAKE_TOOLCHAIN_FILE=cmake-build-${input:buildType}/conan_toolchain.cmake -DBUILD_TESTS=ON",
             "group": "build",
             "dependsOn": [
                 "Install dependencies"
@@ -45,7 +44,17 @@
             "dependsOn": [
                 "Configure project"
             ],
-            "problemMatcher": "$gcc",
+            "problemMatcher": "$gcc"
+        },
+        {
+            "label": "Build emulator tests",
+            "type": "shell",
+            "command": "cmake --build cmake-build-${input:buildType} --target Tests_Emulator",
+            "group": "build",
+            "dependsOn": [
+                "Configure project"
+            ],
+            "problemMatcher": "$gcc"
         },
         {
             "label": "Run program",
@@ -57,6 +66,18 @@
             },
             "dependsOn": [
                 "Build project"
+            ]
+        },
+        {
+            "label": "Run emulator tests",
+            "type": "shell",
+            "command": "source ../conanrun.sh && ctest --test-dir Emulator",
+            "group": "test",
+            "options": {
+                "cwd": "${workspaceFolder}/cmake-build-${input:buildType}/test/"
+            },
+            "dependsOn": [
+                "Build emulator tests"
             ]
         }
     ],
