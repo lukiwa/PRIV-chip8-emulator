@@ -6,6 +6,7 @@
 #include "OpenGL/PixelMapBuilder.h"
 #include "OpenGL/Window.h"
 #include "Utilities/Random.h"
+#include "Emulator/Emulation.h"
 
 int main(int argc, char** argv)
 {
@@ -32,6 +33,8 @@ int main(int argc, char** argv)
     auto pixelMap = pixelMapBuilder.Build();
     renderer->SetPixelMap(pixelMap.get());
 
+    Emulation e({0xe0, 0x00});
+    e.ReadInstruction();
 
     while (!window.ShouldClose()) {
         window.ProcessInput();

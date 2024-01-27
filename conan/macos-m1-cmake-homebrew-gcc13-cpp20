@@ -3,6 +3,7 @@ arch=armv8
 compiler=gcc
 compiler.cppstd=gnu20
 compiler.version=13
+compiler.libcxx=libstdc++11
 os=Macos
 
 
@@ -10,5 +11,5 @@ os=Macos
 cmake/3.26.4
 
 [conf]
-tools.build:compiler_executables={"c": "/opt/homebrew/Cellar/gcc/13.1.0/bin/gcc-13", "cpp": "/opt/homebrew/Cellar/gcc/13.1.0/bin/g++-13"}
+tools.build:compiler_executables={"c": "/opt/homebrew/Cellar/gcc/13.2.0/bin/gcc-13", "cpp": "/opt/homebrew/Cellar/gcc/13.2.0/bin/g++-13"}
 tools.build:cxxflags=["-Wall", "-Wextra", "-pedantic", "-Wfatal-errors", "-Wshadow", "-Wnon-virtual-dtor", "-Wold-style-cast", "-Wunused", "-Wnull-dereference", "-Woverloaded-virtual"]

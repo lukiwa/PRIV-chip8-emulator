@@ -1,0 +1,14 @@
+[settings]
+arch=armv8
+compiler=apple-clang
+compiler.cppstd=gnu20
+compiler.version=15
+compiler.libcxx=libc++
+os=Macos
+
+
+[tool_requires]
+cmake/3.26.4
+
+[conf]
+tools.build:cxxflags=["-Wall", "-Wextra", "-pedantic", "-Wfatal-errors", "-Wshadow", "-Wnon-virtual-dtor", "-Wold-style-cast", "-Wunused", "-Wnull-dereference", "-Woverloaded-virtual"]
