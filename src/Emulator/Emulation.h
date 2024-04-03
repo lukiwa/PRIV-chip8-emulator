@@ -73,13 +73,17 @@ public:
 public:
     explicit Emulation(const RamMemory& ram, bool shiftUsingVY = false)
         : _data(ram)
-        , _shiftUsingVY(false)
+        , _shiftUsingVY(shiftUsingVY)
     {
     }
     ~Emulation() = default;
 
     void FetchAndDecode();
     void Execute();
+
+    ProgramData GetProgramState() const;
+private:
+    void PerformArithmeticOperation();
 
 private:
     ProgramData _data;
