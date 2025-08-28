@@ -39,7 +39,7 @@
         {
             "label": "Build project",
             "type": "shell",
-            "command": "cmake --build cmake-build-${input:buildType}",
+            "command": "cmake --build cmake-build-${input:buildType} && ln -sf cmake-build-${input:buildType}/compile_commands.json ${workspaceFolder}/compile_commands.json",
             "group": "build",
             "dependsOn": [
                 "Configure project"
